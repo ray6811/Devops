@@ -1,1 +1,49 @@
 ---
+- name: Deploy Microservice to GCP Artifact Registry
+  hosts: localhost
+  vars:
+    project_path: "/src/{{ service_name }}"
+    gcp_project_id: "pure-vehicle-466509-n8"
+    gcp_region: "us-central1"
+    repo_name: "docker-repo"
+    image_tag: "latest"
+  tasks:
+
+    - name: Fail if service_name is not provided
+      fail:
+        msg: "Please provide the service_name using -e 'service_name=servicename'"
+      when: service_name is not defined
+
+    - name: Set working directory for the service
+      set_fact:
+        service_dir: "{{ project_path }}/{{ service_name }}"
+        full_image_name: "{{ gcp_region }}-docker.pkg.dev/{{ gcp_project_id }}/{{ repo_name }}/{{ service_name }}:{{ image_tag }}"
+
+    - name: Check if service directory exists
+      stat:
+        path: "{{ service_dir }}"
+      register: service_dir_stat
+
+    - name: Fail if service directory does not exist
+      fail:
+        msg: "Service directory {{ service_dir }} not found!"
+      when: not service_dir_stat.stat.exists
+
+    - name: Build Docker image
+      community.docker.docker_image:
+        build:
+          path: "{{ service_dir }}"
+        name: "{{ full_image_name }}"
+        tag: ""
+        push: false
+
+    - name: Authenticate Docker with Artifact Registry
+      shell: |
+        gcloud auth configure-docker {{ gcp_region }}-docker.pkg.dev --quiet
+
+    - name: Push Docker image to Artifact Registry
+      shell: |
+        docker push {{ full_image_name }}
+
+        
+
