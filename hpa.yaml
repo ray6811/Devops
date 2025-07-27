@@ -2,8 +2,8 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ service_name }}
-  namespace: {{ namespace }}
+  name: ${service_name}
+  namespace: ${namespace}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
