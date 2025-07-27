@@ -3,7 +3,6 @@
   hosts: localhost
   become: yes
   vars:
-    gcp_key_path: "gcp-cr-key"
     repo_url: "https://github.com/ray6811/10-MicroService-Appliction.git"
     project_path: "/opt/"
     gcp_project_id: "pure-vehicle-466509-n8"
