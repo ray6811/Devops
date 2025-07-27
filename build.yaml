@@ -4,7 +4,7 @@
   become: yes
   vars:
     repo_url: "https://github.com/ray6811/10-MicroService-Appliction.git"
-    project_path: "/src/{{ service_name }}"
+    project_path: "/opt/"
     gcp_project_id: "pure-vehicle-466509-n8"
     gcp_region: "us-central1"
     repo_name: "docker-repo"
