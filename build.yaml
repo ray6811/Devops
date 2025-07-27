@@ -11,6 +11,18 @@
     image_tag: "latest"
   tasks:
 
+    - name: Ensure required packages are installed
+      package:
+        name: [git, zip]
+        state: present
+
+    - name: Clone the React repo
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ project_path }}"
+        version: main
+        force: yes
+
     - name: Fail if service_name is not provided
       fail:
         msg: "Please provide the service_name using -e 'service_name=servicename'"
