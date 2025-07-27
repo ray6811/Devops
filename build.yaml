@@ -52,9 +52,16 @@
         push: false
 
 
-    - name: Authenticate Docker with Artifact Registry
-      shell: |
-        gcloud auth configure-docker {{ gcp_region }}-docker.pkg.dev --quiet
+    - stage: Authenticate with GCP Artifact Registry
+      steps:
+        - withCredentials:
+            - file:
+                credentialsId: 'gcp-cr-key'
+                variable: GCP_KEY
+        - sh: |
+            gcloud auth activate-service-account --key-file=$GCP_KEY
+            gcloud config set project $GCP_PROJECT
+            gcloud auth configure-docker ${GCP_REGION}-docker.pkg.dev --quiet
 
     - name: Push Docker image to Artifact Registry
       shell: |
