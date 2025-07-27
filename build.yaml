@@ -52,7 +52,7 @@
         push: false
 
 
-    - stage: Authenticate with GCP Artifact Registry
+    - name: Authenticate with GCP Artifact Registry
       steps:
         - withCredentials:
             - file:
