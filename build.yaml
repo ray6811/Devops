@@ -54,9 +54,10 @@
 
     - name: Authenticate with GCP Artifact Registry
       shell: |
-       gcloud auth activate-service-account --key-file={{ gcp_key_path }}
-       gcloud config set project {{ gcp_project_id }}
-       gcloud auth configure-docker {{ gcp_region }}-docker.pkg.dev --quiet
+       export PATH=/home/jenkins/google-cloud-sdk/bin:$PATH
+        gcloud auth activate-service-account --key-file={{ gcp_key_path }}
+        gcloud config set project pure-vehicle-466509-n8
+        gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
       args:
        executable: /bin/bash
 
