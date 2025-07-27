@@ -5,6 +5,12 @@ metadata:
   name: adservice
   namespace: {{namespace}}
 spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: adservice
