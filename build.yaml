@@ -67,9 +67,8 @@
       shell: |
         docker push {{ full_image_name }}
     
-    - stage: Render Kubernetes Manifests
-      steps:
-        - sh: |
+    - name: Render Kubernetes Manifests
+      shell: |
             export service_name="{{service_name}}"
             export namespace="${NAMESPACE:-backend}"
 
@@ -80,9 +79,8 @@
             envsubst < "/home/jenkins/workspace/test-pipeline/manifest/{{service_name}}.yaml" > rendered_manifest.yaml
             envsubst < /home/jenkins/workspace/test-pipeline/hpa.yaml > rendered_hpa.yaml
 
-    - stage: Deploy kubernetes 
-      steps:
-        - sh: |
+    - name: Deploy kubernetes 
+      shell: |
             kubectl apply -f rendered_namespace.yaml
             kubectl apply -f rendered_manifest.yaml
             kubectl apply -f rendered_hpa.yaml
