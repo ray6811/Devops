@@ -71,7 +71,7 @@
       steps:
         - sh: |
             export service_name="{{service_name}}"
-            export namespace="${NAMESPACE:-default}"
+            export namespace="${NAMESPACE:-backend}"
 
             echo "Using namespace: $namespace"
             echo "Service name: $service_name"
