@@ -1,0 +1,41 @@
+---
+- name: Deploy Microservice to GCP Artifact Registry
+  hosts: localhost
+  become: yes
+  vars:
+    repo_url: "https://github.com/ray6811/10-MicroService-Appliction.git"
+    project_path: "/opt/"
+    gcp_project_id: "pure-vehicle-466509-n8"
+    gcp_region: "us-central1"
+    repo_name: "docker-repo"
+    image_tag: "latest"
+    CLUSTER_ZONE: us-central1-a
+    CLUSTER_NAME: cluster-1
+  tasks:
+   - name: Authenticate with GCP Artifact Registry
+      shell: |
+       gcloud auth activate-service-account --key-file={{ gcp_key_path }}
+       gcloud config set project {{ gcp_project_id }}
+       gcloud auth configure-docker {{ gcp_region }}-docker.pkg.dev --quiet
+       gcloud container clusters get-credentials {{ CLUSTER_NAME }} --zone {{ CLUSTER_ZONE}}
+      args:
+       executable: /bin/bash
+    
+    - name: Render Kubernetes Manifests
+      shell: |
+            export service_name="{{service_name}}"
+            export namespace="${NAMESPACE:-backend}"
+
+            echo "Using namespace: $namespace"
+            echo "Service name: $service_name"
+
+            envsubst < /home/jenkins/workspace/test-pipeline/namespace.yaml > rendered_namespace.yaml
+            envsubst < "/home/jenkins/workspace/test-pipeline/manifest/{{service_name}}.yaml" > rendered_manifest.yaml
+            envsubst < /home/jenkins/workspace/test-pipeline/hpa.yaml > rendered_hpa.yaml
+
+    - name: Deploy kubernetes 
+      shell: |
+            kubectl apply -f rendered_namespace.yaml
+            kubectl apply -f rendered_manifest.yaml
+            kubectl apply -f rendered_hpa.yaml
+        
