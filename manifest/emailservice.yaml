@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: emailservice
-  namespace: <NAMESPACE>
+  namespace: ${namespace}
 spec:
   selector:
     matchLabels:
@@ -29,7 +29,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/google-samples/microservices-demo/emailservice:v0.8.0
+        image: "us-central1-docker.pkg.dev/pure-vehicle-466509-n8/docker-repo/${service_name}:latest"
         ports:
         - containerPort: 8080
         env:
@@ -57,7 +57,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: emailservice
-  namespace: <NAMESPACE>
+  namespace: ${namespace}
 spec:
   type: ClusterIP
   selector:
