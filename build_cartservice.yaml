@@ -1,0 +1,87 @@
+---
+- name: Deploy Microservice to GCP Artifact Registry
+  hosts: localhost
+  become: yes
+  vars:
+    repo_url: "https://github.com/ray6811/10-MicroService-Appliction.git"
+    project_path: "/opt/"
+    gcp_project_id: "pure-vehicle-466509-n8"
+    gcp_region: "us-central1"
+    repo_name: "docker-repo"
+    image_tag: "latest"
+    CLUSTER_ZONE: us-central1-a
+    CLUSTER_NAME: cluster-1
+  tasks:
+
+    - name: Ensure required packages are installed
+      package:
+        name: [git, zip]
+        state: present
+
+    - name: Clone the React repo
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ project_path }}"
+        version: main
+        force: yes
+
+    - name: Fail if service_name is not provided
+      fail:
+        msg: "Please provide the service_name using -e 'service_name=servicename'"
+      when: service_name is not defined
+
+    - name: Set working directory for the service
+      set_fact:
+        service_dir: "{{ project_path }}/src/{{ service_name }}/src"
+        full_image_name: "{{ gcp_region }}-docker.pkg.dev/{{ gcp_project_id }}/{{ repo_name }}/{{ service_name }}:{{ image_tag }}"
+
+    - name: Check if service directory exists
+      stat:
+        path: "{{ service_dir }}"
+      register: service_dir_stat
+
+    - name: Fail if service directory does not exist
+      fail:
+        msg: "Service directory {{ service_dir }} not found!"
+      when: not service_dir_stat.stat.exists
+
+    - name: Build Docker image
+      community.docker.docker_image:
+        name: "{{ full_image_name }}"
+        source: build
+        build:
+         path: "{{ service_dir }}"
+        push: false
+
+
+    - name: Authenticate with GCP Artifact Registry
+      shell: |
+       gcloud auth activate-service-account --key-file={{ gcp_key_path }}
+       gcloud config set project {{ gcp_project_id }}
+       gcloud auth configure-docker {{ gcp_region }}-docker.pkg.dev --quiet
+       gcloud container clusters get-credentials {{ CLUSTER_NAME }} --zone {{ CLUSTER_ZONE}}
+      args:
+       executable: /bin/bash
+
+    - name: Push Docker image to Artifact Registry
+      shell: |
+        docker push {{ full_image_name }}
+    
+    - name: Render Kubernetes Manifests
+      shell: |
+            export service_name="{{service_name}}"
+            export namespace="${NAMESPACE:-backend}"
+
+            echo "Using namespace: $namespace"
+            echo "Service name: $service_name"
+
+            envsubst < /home/jenkins/workspace/test-pipeline/namespace.yaml > rendered_namespace.yaml
+            envsubst < "/home/jenkins/workspace/test-pipeline/manifest/{{service_name}}.yaml" > rendered_manifest.yaml
+            envsubst < /home/jenkins/workspace/test-pipeline/hpa.yaml > rendered_hpa.yaml
+
+    - name: Deploy kubernetes 
+      shell: |
+            kubectl apply -f rendered_namespace.yaml
+            kubectl apply -f rendered_manifest.yaml
+            kubectl apply -f rendered_hpa.yaml
+        
