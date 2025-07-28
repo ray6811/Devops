@@ -29,7 +29,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: gcr.io/google-samples/microservices-demo/cartservice:v0.8.0
+        image: "us-central1-docker.pkg.dev/pure-vehicle-466509-n8/docker-repo/${service_name}:latest"
         ports:
         - containerPort: 7070
         env:
