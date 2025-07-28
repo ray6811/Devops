@@ -12,7 +12,8 @@
     CLUSTER_ZONE: us-central1-a
     CLUSTER_NAME: cluster-1
   tasks:
-   - name: Authenticate with GCP Artifact Registry
+   
+    - name: Authenticate with GCP Artifact Registry
       shell: |
        gcloud auth activate-service-account --key-file={{ gcp_key_path }}
        gcloud config set project {{ gcp_project_id }}
