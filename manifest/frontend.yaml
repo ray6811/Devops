@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-  namespace: <NAMESPACE>
+  namespace: ${namespace}
 spec:
   selector:
     matchLabels:
@@ -30,7 +30,7 @@ spec:
                 - ALL
             privileged: false
             readOnlyRootFilesystem: true
-          image: gcr.io/google-samples/microservices-demo/frontend:v0.8.0
+          image: "us-central1-docker.pkg.dev/pure-vehicle-466509-n8/docker-repo/${service_name}:latest"
           ports:
           - containerPort: 8080
           readinessProbe:
@@ -88,7 +88,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend
-  namespace: <NAMESPACE>
+  namespace: ${namespace}
 spec:
   type: ClusterIP
   selector:
