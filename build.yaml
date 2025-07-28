@@ -9,6 +9,8 @@
     gcp_region: "us-central1"
     repo_name: "docker-repo"
     image_tag: "latest"
+    CLUSTER_ZONE: 
+    CLUSTER_NAME:
   tasks:
 
     - name: Ensure required packages are installed
@@ -57,12 +59,32 @@
        gcloud auth activate-service-account --key-file={{ gcp_key_path }}
        gcloud config set project {{ gcp_project_id }}
        gcloud auth configure-docker {{ gcp_region }}-docker.pkg.dev --quiet
+       gcloud container clusters get-credentials {{ CLUSTER_NAME }}" --zone "{{ CLUSTER_ZONE}}"
       args:
        executable: /bin/bash
 
     - name: Push Docker image to Artifact Registry
       shell: |
         docker push {{ full_image_name }}
+    
+    - stage: Render Kubernetes Manifests
+      steps:
+        - sh: |
+            export service_name="${SERVICE_NAME}"
+            export namespace="${NAMESPACE:-default}"
 
+            echo "Using namespace: $namespace"
+            echo "Service name: $service_name"
+
+            envsubst < /home/jenkins/workspace/test-pipeline/namespace.yaml > rendered_namespace.yaml
+            envsubst < "/home/jenkins/workspace/test-pipeline/manifest/${service_name}.yaml" > rendered_manifest.yaml
+            envsubst < /home/jenkins/workspace/test-pipeline/hpa.yaml > rendered_hpa.yaml
+
+    - stage: Deploy kubernetes 
+      steps:
+        - sh: |
+            kubectl apply -f rendered_namespace.yaml
+            kubectl apply -f rendered_manifest.yaml
+            kubectl apply -f rendered_hpa.yaml
         
 
