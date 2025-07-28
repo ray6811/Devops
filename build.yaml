@@ -9,8 +9,8 @@
     gcp_region: "us-central1"
     repo_name: "docker-repo"
     image_tag: "latest"
-    CLUSTER_ZONE: 
-    CLUSTER_NAME:
+    CLUSTER_ZONE: us-central1-a
+    CLUSTER_NAME: cluster-1
   tasks:
 
     - name: Ensure required packages are installed
@@ -70,14 +70,14 @@
     - stage: Render Kubernetes Manifests
       steps:
         - sh: |
-            export service_name="${SERVICE_NAME}"
+            export service_name="{{service_name}}"
             export namespace="${NAMESPACE:-default}"
 
             echo "Using namespace: $namespace"
             echo "Service name: $service_name"
 
             envsubst < /home/jenkins/workspace/test-pipeline/namespace.yaml > rendered_namespace.yaml
-            envsubst < "/home/jenkins/workspace/test-pipeline/manifest/${service_name}.yaml" > rendered_manifest.yaml
+            envsubst < "/home/jenkins/workspace/test-pipeline/manifest/{{service_name}}.yaml" > rendered_manifest.yaml
             envsubst < /home/jenkins/workspace/test-pipeline/hpa.yaml > rendered_hpa.yaml
 
     - stage: Deploy kubernetes 
