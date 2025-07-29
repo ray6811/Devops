@@ -9,8 +9,8 @@
     gcp_region: "us-central1"
     repo_name: "docker-repo"
     image_tag: "latest"
-    CLUSTER_ZONE: us-central1-a
-    CLUSTER_NAME: me-west1
+    CLUSTER_ZONE: me-west1
+    CLUSTER_NAME: cluster-2
   tasks:
    
     - name: Authenticate with GCP Artifact Registry
