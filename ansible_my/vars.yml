@@ -1,0 +1,9 @@
+---
+repo_url: "https://github.com/ray6811/10-MicroService-Appliction.git"
+project_path: "/opt/"
+gcp_project_id: "pure-vehicle-466509-n8"
+gcp_region: "us-central1"
+repo_name: "docker-repo"
+image_tag: "latest"
+CLUSTER_ZONE: me-west1
+CLUSTER_NAME: cluster-2
