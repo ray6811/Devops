@@ -1,0 +1,6 @@
+# vault.yml
+---
+# Sensitive variables should be encrypted using ansible-vault
+vault_gcp_key_path: "/path/to/gcp-key.json"
+vault_repo_url: "git@github.com:your-org/your-repo.git"
+vault_secret: "super_secret_value"
