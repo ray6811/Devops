@@ -1,0 +1,10 @@
+#!/bin/bash
+export service_name="{{service_name}}"
+export namespace="${NAMESPACE:-backend}"
+
+echo "Using namespace: $namespace"
+echo "Service name: $service_name"
+
+envsubst < /home/jenkins/workspace/test-pipeline/namespace.yaml > rendered_namespace.yaml
+envsubst < "/home/jenkins/workspace/test-pipeline/manifest/{{service_name}}.yaml" > rendered_manifest.yaml
+envsubst < /home/jenkins/workspace/test-pipeline/hpa.yaml > rendered_hpa.yaml
