@@ -48,12 +48,12 @@
    
     - name: Make script executable
       file:
-       path: ansible_my/gcp_auth.sh
+       path: gcp_auth.sh
        mode: '0755'
 
     - name: Authenticate with GCP Artifact Registry
       shell: |
-       ansible_my/gcp_auth.sh
+         ./gcp_auth.sh
       args:
        executable: /bin/bash
 
@@ -63,12 +63,12 @@
     
     - name: Make script executable
       file:
-       path: ansible_my/render.sh
+       path: render.sh
        mode: '0755'
     
     - name: Render Kubernetes Manifests
       shell: |
-         ansible_my/render.sh
+          ./render.sh
       args: 
         executable: /bin/bash
 
