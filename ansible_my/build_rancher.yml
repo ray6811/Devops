@@ -1,0 +1,28 @@
+---
+- name: Deploy Microservice to GCP Artifact Registry
+  hosts: localhost
+  become: yes
+  vars_files:
+    - vars.yml
+  tasks:
+
+    - name: Ensure required packages are installed
+      package:
+        name: [git, zip]
+        state: present
+
+    - name: Deploy GCP auth script from template
+      template:
+       src: gcp_auth.sh.j2
+       dest: gcp_auth.sh
+       mode: '0755'
+
+    - name: Authenticate with GCP Artifact Registry
+      shell: |
+         ./gcp_auth.sh
+      args:
+       executable: /bin/bash
+
+    - name: Deploy kubernetes 
+      shell: |
+            kubectl apply -f rancher.yaml
