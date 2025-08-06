@@ -8,8 +8,8 @@ kind: Deployment
 metadata:
   name: rancher
   namespace: cattle-system
-labels:
-  app: rancher
+  labels:
+    app: rancher
 spec:
   replicas: 1
   selector:
@@ -28,7 +28,7 @@ spec:
         - containerPort: 443
         env:
         - name: CATTLE_BOOTSTRAP_PASSWORD
-          value: "admin"
+          value: "admin"   # Initial login password
         volumeMounts:
         - name: rancher-data
           mountPath: /var/lib/rancher
@@ -42,10 +42,15 @@ metadata:
   name: rancher
   namespace: cattle-system
 spec:
-  type: LoadBalancer
+  type: NodePort
+  selector:
+    app: rancher
   ports:
   - name: http
     port: 80
     targetPort: 80
-  selector:
-    app: rancher
+    nodePort: 30080
+  - name: https
+    port: 443
+    targetPort: 443
+    nodePort: 30443
