@@ -48,12 +48,12 @@
    
     - name: Make script executable
       file:
-       path: gcp_auth.sh
+       path: gcp_auth.sh.j2
        mode: '0755'
 
     - name: Authenticate with GCP Artifact Registry
       shell: |
-         ./gcp_auth.sh
+         ./gcp_auth.sh.j2
       args:
        executable: /bin/bash
 
@@ -63,12 +63,12 @@
     
     - name: Make script executable
       file:
-       path: render.sh
+       path: render.sh.j2
        mode: '0755'
     
     - name: Render Kubernetes Manifests
       shell: |
-          ./render.sh
+          ./render.sh.j2
       args: 
         executable: /bin/bash
 
