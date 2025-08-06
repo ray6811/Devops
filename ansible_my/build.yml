@@ -15,7 +15,7 @@
       git:
         repo: "{{ repo_url }}"
         dest: "{{ project_path }}"
-        version: main
+        version: {{ git_tag }}
         force: yes
 
     - name: Fail if service_name is not provided
