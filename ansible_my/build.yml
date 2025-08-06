@@ -3,7 +3,7 @@
   hosts: localhost
   become: yes
   vars_files:
-    - vars.yml
+    - ansible/vars.yml
   tasks:
 
     - name: Ensure required packages are installed
@@ -45,11 +45,15 @@
         build:
          path: "{{ service_dir }}"
         push: false
-
+   
+    - name: Make script executable
+      file:
+       path: ansible_my/gcp_auth.sh
+       mode: '0755'
 
     - name: Authenticate with GCP Artifact Registry
       shell: |
-       ./gcp_auth.sh
+       ansible_my/gcp_auth.sh
       args:
        executable: /bin/bash
 
@@ -57,9 +61,14 @@
       shell: |
         docker push {{ full_image_name }}
     
+    - name: Make script executable
+      file:
+       path: ansible_my/render.sh
+       mode: '0755'
+    
     - name: Render Kubernetes Manifests
       shell: |
-        ./render.sh
+         ansible_my/render.sh
       args: 
         executable: /bin/bash
 
