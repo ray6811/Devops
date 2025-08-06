@@ -3,7 +3,7 @@
   hosts: localhost
   become: yes
   vars_files:
-    - ansible/vars.yml
+    - ansible_my/vars.yml
   tasks:
 
     - name: Ensure required packages are installed
