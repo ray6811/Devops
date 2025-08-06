@@ -35,7 +35,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: "us-central1-docker.pkg.dev/pure-vehicle-466509-n8/docker-repo/${service_name}_${git_tag}:latest"
+        image: "us-central1-docker.pkg.dev/pure-vehicle-466509-n8/docker-repo/${service_name}_${git_tag}:latest_${git_tag}"
         ports:
         - containerPort: 9555
         env:
