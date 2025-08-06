@@ -62,14 +62,15 @@
       shell: |
         docker push {{ full_image_name }}
     
-    - name: Make script executable
-      file:
-       path: render.sh.j2
+    - name: Deploy GCP auth script from template
+      template:
+       src: render.sh.j2
+       dest: render.sh
        mode: '0755'
     
     - name: Render Kubernetes Manifests
       shell: |
-          ./render.sh.j2
+          ./render.sh
       args: 
         executable: /bin/bash
 
