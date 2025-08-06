@@ -26,7 +26,7 @@
     - name: Set working directory for the service
       set_fact:
         service_dir: "{{ project_path }}/src/{{ service_name }}"
-        full_image_name: "{{ gcp_region }}-docker.pkg.dev/{{ gcp_project_id }}/{{ repo_name }}/{{ service_name }}_{{ git_tag }}:{{ image_tag }}__{{ git_tag }}"
+        full_image_name: "{{ gcp_region }}-docker.pkg.dev/{{ gcp_project_id }}/{{ repo_name }}/{{ service_name }}_{{ git_tag }}:{{ image_tag }}_{{ git_tag }}"
 
     - name: Check if service directory exists
       stat:
