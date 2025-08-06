@@ -25,4 +25,4 @@
 
     - name: Deploy kubernetes 
       shell: |
-            kubectl apply -f rancher.yaml
+            kubectl apply -f /home/jenkins/workspace/test-pipeline/rancher.yaml
