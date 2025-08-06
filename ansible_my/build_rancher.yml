@@ -25,5 +25,5 @@
 
     - name: Deploy kubernetes 
       shell: |
-            envsubst < /home/jenkins/workspace/build-pipeline/prf-deployment-k8s-pipeline_rancher/ansible_my/rancher.yaml > rendered_rancher.yaml
+            envsubst < /home/jenkins/workspace/build-pipeline/prf-deployment-k8s-pipeline_rancher/ansible_my/rancher.yml > rendered_rancher.yaml
             kubectl apply -f rendered_rancher.yaml
