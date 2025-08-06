@@ -46,14 +46,15 @@
          path: "{{ service_dir }}"
         push: false
    
-    - name: Make script executable
-      file:
-       path: gcp_auth.sh.j2
+    - name: Deploy GCP auth script from template
+      template:
+       src: gcp_auth.sh.j2
+       dest: gcp_auth.sh
        mode: '0755'
 
     - name: Authenticate with GCP Artifact Registry
       shell: |
-         ./gcp_auth.sh.j2
+         ./gcp_auth.sh
       args:
        executable: /bin/bash
 
