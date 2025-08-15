@@ -31,25 +31,6 @@ spec:
           value: "admin"
         securityContext:
           privileged: true
-        volumeMounts:
-        - name: rancher-data
-          mountPath: /var/lib/rancher
-      volumes:
-      - name: rancher-data
-        persistentVolumeClaim:
-          claimName: rancher-pvc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: rancher-pvc
-  namespace: cattle-system
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
 ---
 apiVersion: v1
 kind: Service
