@@ -10,7 +10,7 @@
     repo_name: "docker-repo"
     image_tag: "latest"
     CLUSTER_ZONE: me-west1
-    CLUSTER_NAME: cluster-2
+    CLUSTER_NAME: cluster-3
   tasks:
    
     - name: Authenticate with GCP Artifact Registry
