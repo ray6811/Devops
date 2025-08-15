@@ -3,6 +3,25 @@ kind: Namespace
 metadata:
   name: cattle-system
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: rancher-admin
+  namespace: cattle-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: rancher-admin-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: rancher-admin
+  namespace: cattle-system
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,6 +39,7 @@ spec:
       labels:
         app: rancher
     spec:
+      serviceAccountName: rancher-admin
       containers:
       - name: rancher
         image: rancher/rancher:v2.12.1-alpha1
