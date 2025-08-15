@@ -22,19 +22,34 @@ spec:
     spec:
       containers:
       - name: rancher
-        image: rancher/rancher:latest
+        image: rancher/rancher:v2.9.0
         ports:
         - containerPort: 80
         - containerPort: 443
         env:
         - name: CATTLE_BOOTSTRAP_PASSWORD
-          value: "admin"   # Initial login password
+          value: "admin"
+        securityContext:
+          privileged: true
         volumeMounts:
         - name: rancher-data
           mountPath: /var/lib/rancher
       volumes:
       - name: rancher-data
-        emptyDir: {} # Replace with PersistentVolumeClaim for production
+        persistentVolumeClaim:
+          claimName: rancher-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rancher-pvc
+  namespace: cattle-system
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
 ---
 apiVersion: v1
 kind: Service
