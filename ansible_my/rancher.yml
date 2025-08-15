@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: rancher
-        image: rancher/rancher:v2.9.0
+        image: rancher/rancher:v2.12.1-alpha1
         ports:
         - containerPort: 80
         - containerPort: 443
@@ -57,15 +57,13 @@ metadata:
   name: rancher
   namespace: cattle-system
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: rancher
   ports:
   - name: http
     port: 80
     targetPort: 80
-    nodePort: 30080
   - name: https
     port: 443
     targetPort: 443
-    nodePort: 30443
