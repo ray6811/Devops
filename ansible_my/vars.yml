@@ -6,5 +6,5 @@ gcp_region: "us-central1"
 repo_name: "docker-repo"
 image_tag: "latest"
 CLUSTER_ZONE: me-west1
-CLUSTER_NAME: cluster-2
+CLUSTER_NAME: cluster-3
 git_tag: "{{ git_tag_version }}"
