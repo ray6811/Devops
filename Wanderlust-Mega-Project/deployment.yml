@@ -15,8 +15,13 @@
         version: main
         force: yes
 
-    - name: Run build script
-      command: ./build.sh
+    - name: Install dependencies
+      command: npm install
+      args:
+        chdir: "{{ project_path }}"
+
+    - name: Build React app
+      command: npm run build
       args:
         chdir: "{{ project_path }}"
 
