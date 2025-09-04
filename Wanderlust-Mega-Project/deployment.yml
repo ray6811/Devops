@@ -1,6 +1,6 @@
 ---
 - name: Build & Deploy Wanderlust-Mega-Project Frontend 
-  hostname: localhost
+  host: localhost
   become: yes 
 
   vars:
