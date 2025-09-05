@@ -1,6 +1,6 @@
 ---
-- Name: Build & Deploy Wanderlust-Mega-Project Frontend 
-  hostname: localhost
+- name: Build & Deploy Wanderlust-Mega-Project Frontend 
+  hosts: localhost
   become: yes 
 
   pipeline:
