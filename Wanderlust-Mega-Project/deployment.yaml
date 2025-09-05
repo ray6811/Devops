@@ -3,13 +3,6 @@
   hosts: localhost
   become: yes 
 
-  pipeline:
-  agent:
-    any: true
-
-  tools:
-    nodejs: "nodejs-global"
-
   vars:
     repo_url: https://github.com/ray6811/Wanderlust-Mega-Project.git
     project_path: /opt/
