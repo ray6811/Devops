@@ -1,5 +1,5 @@
 ---
-- name: Build & Deploy Wanderlust-Mega-Project Frontend 
+- Name: Build & Deploy Wanderlust-Mega-Project Frontend 
   hostname: localhost
   become: yes 
 
