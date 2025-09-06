@@ -35,14 +35,7 @@
         executable: /bin/bash
       become: yes
 
-    - name: Dployment on Server 
-      copy:
-        src: "{{ project_path }}/frontend/build/"
-        dest: /var/www/
-        owner: www-data
-        group: www-data
-        mode: '0755'
-      become: yes
+   
 
     
 
