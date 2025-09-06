@@ -44,10 +44,10 @@
 
   tasks:
     - name: Remove existing deployment directory (if any)
-    file:
-      path: "{{ deploy_path }}/*"
-      state: absent
-    become: yes
+      file:
+        path: "{{ deploy_path }}/*"
+        state: absent
+      become: yes
     
     - name: Ensure deployment directory exists on remote
       file:
