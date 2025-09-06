@@ -37,7 +37,7 @@
 - name: Deploy frontend build to remote servers
   hosts: webservers          # Group from your inventory file
   become: yes
-  remote_user: jenkins       # Use Jenkins user
+  remote_user: azureuser     # Use Jenkins user
   vars:
     local_build_path: /opt/frontend/dist  # adjust if your build folder is 'build'
     deploy_path: /var/www/
