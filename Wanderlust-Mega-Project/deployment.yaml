@@ -5,7 +5,7 @@
 
   vars:
     repo_url: https://github.com/ray6811/Wanderlust-Mega-Project.git
-    project_path: /opt/frontend
+    project_path: /opt/
     
   tasks:
     - name: Clone the React repo
