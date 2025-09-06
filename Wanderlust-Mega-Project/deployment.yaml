@@ -26,11 +26,14 @@
 
       
 
-    - name: Build React app
-      command: npm run build
-      become: yes
+    - name: Build 
+      shell: |
+        source /home/jenkins/.nvm/nvm.sh
+        cd {{ project_path }}/frontend
+        npm run build
       args:
-        chdir: "{{ project_path }}/frontend/"
+        executable: /bin/bash
+      become: no
       
 
     
