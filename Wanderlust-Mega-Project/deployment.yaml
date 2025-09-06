@@ -17,14 +17,14 @@
 
     - name: Install dependencies
       command: npm install
-      become: no
+      become: yes
       args:
         chdir: "{{ project_path }}/frontend/"
       
 
     - name: Build React app
       command: npm run build
-      become: no
+      become: yes
       args:
         chdir: "{{ project_path }}/frontend/"
       
