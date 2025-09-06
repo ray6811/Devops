@@ -15,11 +15,15 @@
         version: main
         force: yes
 
-    - name: Install dependencies
-      command: npm install
-      become: yes
+    - name: Install frontend dependencies
+      shell: |
+        source /home/jenkins/.nvm/nvm.sh
+        cd {{ project_path }}/frontend
+        npm install
       args:
-        chdir: "{{ project_path }}/frontend/"
+        executable: /bin/bash
+      become: no
+
       
 
     - name: Build React app
