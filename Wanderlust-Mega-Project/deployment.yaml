@@ -43,6 +43,12 @@
     deploy_path: /var/www/
 
   tasks:
+    - name: Remove existing deployment directory (if any)
+    file:
+      path: "{{ deploy_path }}/*"
+      state: absent
+    become: yes
+    
     - name: Ensure deployment directory exists on remote
       file:
         path: "{{ deploy_path }}"
@@ -53,8 +59,8 @@
       copy:
         src: "{{ local_build_path }}/"
         dest: "{{ deploy_path }}/"
-        owner: jenkins
-        group: jenkins
+        owner: root
+        group: root
         mode: '0755'
         remote_src: no
 
