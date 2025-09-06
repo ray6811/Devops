@@ -1,7 +1,7 @@
 ---
 - name: Build & Deploy Wanderlust-Mega-Project Frontend 
   hosts: localhost
-  become: yes 
+  become: no
 
   vars:
     repo_url: https://github.com/ray6811/Wanderlust-Mega-Project.git
@@ -17,14 +17,14 @@
 
     - name: Install dependencies
       command: npm install
-      become: yes
+      become: no
       args:
         chdir: "{{ project_path }}/frontend/"
       
 
     - name: Build React app
       command: npm run build
-      become: yes
+      become: no
       args:
         chdir: "{{ project_path }}/frontend/"
       
