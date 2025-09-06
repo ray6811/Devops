@@ -1,7 +1,7 @@
 ---
 - name: Build & Deploy Wanderlust-Mega-Project Frontend 
   hosts: localhost
-  become: no
+  become: yes
 
   vars:
     repo_url: https://github.com/ray6811/Wanderlust-Mega-Project.git
@@ -22,7 +22,7 @@
         npm install
       args:
         executable: /bin/bash
-      become: no
+      become: yes
 
       
 
@@ -33,7 +33,7 @@
         npm run build
       args:
         executable: /bin/bash
-      become: no
+      become: yes
       
 
     
