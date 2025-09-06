@@ -1,0 +1,4 @@
+cd Wanderlust-Mega-Project
+# Run Ansible playbook with dynamic PEM key
+export ANSIBLE_HOST_KEY_CHECKING=False
+ansible-playbook -i inventory.ini deployment.yaml -e "ansible_ssh_private_key_file=${AZURE_KEY_PATH}"
