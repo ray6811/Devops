@@ -1,12 +1,12 @@
 ---
-- name: Build & Deploy Wanderlust-Mega-Project Frontend 
+- name: Build Wanderlust-Mega-Project Frontend Locally
   hosts: localhost
   become: yes
 
   vars:
     repo_url: https://github.com/ray6811/Wanderlust-Mega-Project.git
     project_path: /opt
-    
+
   tasks:
     - name: Clone the React repo
       git:
@@ -23,7 +23,8 @@
       args:
         executable: /bin/bash
       become: yes
-    - name: Build 
+
+    - name: Build React frontend
       shell: |
         source /home/jenkins/.nvm/nvm.sh
         cd {{ project_path }}/frontend
@@ -32,20 +33,30 @@
         executable: /bin/bash
       become: yes
 
-    - name: Deploy frontend build to remote servers
-      hosts: webservers
-      become: yes
-      remote_user: jenkins  # or jenkins
-      vars:
-        local_build_path: /opt/Wanderlust-Mega-Project/frontend/dist
-        deploy_path: /var/www/
+# ---------------- Deployment Play ----------------
 
-      
+- name: Deploy frontend build to remote servers
+  hosts: webservers          # Group from your inventory file
+  become: yes
+  remote_user: jenkins       # Use Jenkins user
+  vars:
+    local_build_path: /opt/Wanderlust-Mega-Project/frontend/dist  # adjust if your build folder is 'build'
+    deploy_path: /var/www/
 
-    
+  tasks:
+    - name: Ensure deployment directory exists on remote
+      file:
+        path: "{{ deploy_path }}"
+        state: directory
+        mode: '0755'
 
-   
-
-    
+    - name: Copy frontend build to remote server
+      copy:
+        src: "{{ local_build_path }}/"
+        dest: "{{ deploy_path }}/"
+        owner: jenkins
+        group: jenkins
+        mode: '0755'
+        remote_src: no
 
     
